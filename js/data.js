@@ -968,8 +968,8 @@ const cadenas = [
                 giro: "AASS"
             },
               {
-                id: "METRO SAN JUAN DE MIRAFLORES",
-                nombre: "Metro San Juan de Miraflores",
+                id: "METRO SAN JUAN DE LURIGANCHO",
+                nombre: "Metro San Juan de Lurigancho",
                 giro: "AASS"
             },
               {
