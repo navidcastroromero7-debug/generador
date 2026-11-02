@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ReportX | Gestión de reportes</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/styles.css?v=20261102-classified-ui-3">
+
+    <!-- Estilos críticos de fotografías clasificadas: quedan en el HTML para evitar
+         que una caché antigua de styles.css deje visibles botones sin formato. -->
+    <style id="reportx-classified-critical-styles">
+        #classifiedPhotos { display:flex; flex-direction:column; gap:18px; width:100%; }
+        #classifiedPhotos .classified-chain { border-top:1px solid var(--gray-200); padding-top:16px; margin-top:0; width:100%; }
+        #classifiedPhotos .classified-chain:first-child { border-top:0; padding-top:0; }
+        #classifiedPhotos .classified-row { display:flex !important; flex-direction:column !important; align-items:stretch !important; justify-content:flex-start !important; gap:12px !important; width:100%; padding:14px 16px; margin-top:9px; border:1px solid var(--gray-200); border-radius:12px; background:var(--white); box-shadow:0 2px 8px rgba(39,30,70,.035); }
+        #classifiedPhotos .classified-row-header { display:flex !important; flex-direction:row !important; align-items:center !important; justify-content:space-between !important; gap:12px; width:100%; flex-wrap:wrap; }
+        #classifiedPhotos .classified-row-info { flex:1 1 180px; min-width:160px; }
+        #classifiedPhotos .classified-row-info strong { display:block; color:var(--black); font-size:12px; line-height:1.4; font-weight:700; }
+        #classifiedPhotos .classified-row-info span { display:block; margin-top:3px; color:var(--gray-500); font-size:10px; line-height:1.4; }
+        #classifiedPhotos .classified-row-actions { display:flex !important; flex-direction:row !important; align-items:center !important; justify-content:flex-end !important; gap:8px; flex-wrap:wrap; }
+        #classifiedPhotos .classified-row-actions button { appearance:none; -webkit-appearance:none; display:inline-flex !important; align-items:center; justify-content:center; min-height:34px; padding:8px 12px !important; border:1px solid transparent !important; border-radius:8px !important; font-family:inherit; font-size:11px !important; line-height:1.2; font-weight:700 !important; white-space:nowrap; cursor:pointer; transition:background .18s ease,border-color .18s ease,opacity .18s ease; }
+        #classifiedPhotos button.classified-delete-photos { background:var(--purple-light) !important; color:var(--purple-dark) !important; border-color:#e1d8ff !important; }
+        #classifiedPhotos button.classified-delete-photos:hover:not(:disabled) { background:#ded5ff !important; border-color:#d2c4ff !important; }
+        #classifiedPhotos button.classified-delete-photos:disabled { opacity:.45; cursor:not-allowed; }
+        #classifiedPhotos button.classified-delete-store { background:#fff1f0 !important; color:#b42318 !important; border-color:#ffe0dd !important; }
+        #classifiedPhotos button.classified-delete-store:hover { background:#ffdddd !important; border-color:#ffc8c2 !important; }
+        #classifiedPhotos .classified-thumbnails { display:flex !important; align-items:flex-start !important; justify-content:flex-start !important; flex-direction:row !important; flex-wrap:wrap !important; gap:10px; width:100%; min-height:0; }
+        #classifiedPhotos .classified-photo { position:relative; display:block !important; flex:0 0 68px; width:68px; height:68px; padding:0; margin:0; border:2px solid transparent; border-radius:9px; overflow:hidden; cursor:pointer; background:var(--gray-100); }
+        #classifiedPhotos .classified-photo.selected { border-color:var(--purple); box-shadow:0 0 0 2px rgba(108,59,255,.12); }
+        #classifiedPhotos .classified-photo img { display:block; width:100%; height:100%; object-fit:cover; border-radius:7px; }
+        #classifiedPhotos .classified-photo input[type="checkbox"] { position:absolute; top:5px; right:5px; width:16px; height:16px; margin:0; accent-color:var(--purple); cursor:pointer; }
+        #classifiedPhotos .classified-help, #classifiedPhotos .classified-empty { display:block; width:100%; color:var(--gray-500); font-size:10px; line-height:1.45; }
+        #classifiedPhotos .classified-empty-state { padding:24px; color:var(--gray-500); font-size:12px; text-align:center; border:1px dashed var(--gray-300); border-radius:12px; background:var(--white); }
+        @media (max-width:680px) {
+            #classifiedPhotos .classified-row { padding:12px; }
+            #classifiedPhotos .classified-row-header { align-items:flex-start !important; flex-direction:column !important; }
+            #classifiedPhotos .classified-row-actions { width:100%; justify-content:flex-start !important; }
+            #classifiedPhotos .classified-row-actions button { flex:1 1 auto; }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="brand">
+                <div class="brand-icon">
+                    R
+                </div>
+
+                <div class="brand-text">
+                    <span>Report</span><strong>X</strong>
+                </div>
+            </div>
+
+            <nav class="navigation">
+
+                <p class="nav-title">PRINCIPAL</p>
+
+                <a href="#" class="nav-item active">
+                    <span class="nav-icon">⌂</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">＋</span>
+                    <span>Nuevo reporte</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▣</span>
+                    <span>Mis reportes</span>
+                </a>
+
+                <p class="nav-title">GESTIÓN</p>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▤</span>
+                    <span>Sucursales</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">⚙</span>
+                    <span>Configuración</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+
+                <div class="help-card">
+                    <div class="help-icon">?</div>
+
+                    <div>
+                        <strong>¿Necesitas ayuda?</strong>
+                        <span>Consulta la guía</span>
+                    </div>
+                </div>
+
+                <div class="user-profile">
+                    <div class="avatar">
+                        N
+                    </div>
+
+                    <div class="user-info">
+                        <strong>Usuario</strong>
+                        <span>Marketing</span>
+                    </div>
+
+                    <button class="more-btn">•••</button>
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN -->
+        <main class="main">
+
+            <!-- HEADER -->
+            <header class="topbar">
+
+                <div>
+                    <p class="breadcrumb">Inicio / Dashboard</p>
+                    <h1>Hola, bienvenido 👋</h1>
+                </div>
+
+                <div class="topbar-actions">
+
+                    <button class="notification">
+                        🔔
+                        <span></span>
+                    </button>
+
+                    <button class="new-report-btn" id="newReportBtn">
+                        <span>＋</span>
+                        Nuevo reporte
+                    </button>
+
+                </div>
+
+            </header>
+
+
+            <!-- CONTENT -->
+            <section class="content" id="mainContent">
+
+                <!-- STATS -->
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+
+                        <div class="stat-header">
+                            <span>Reportes generados</span>
+
+                            <div class="stat-icon purple">
+                                ▣
+                            </div>
+                        </div>
+
+                        <div class="stat-value">
+                            24
+                        </div>
+
+                        <div class="stat-footer positive">
+                            ↑ 12.5%
+                            <span>vs. mes anterior</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-header">
+                            <span>Sucursales</span>
+
+                            <div class="stat-icon blue">
+                                ◉
+                            </div>
+                        </div>
+
+                        <div class="stat-value">
+                            18
+                        </div>
+
+                        <div class="stat-footer">
+                            <span>Registradas actualmente</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-header">
+                            <span>Fotografías procesadas</span>
+
+                            <div class="stat-icon lime">
+                                ◫
+                            </div>
+                        </div>
+
+                        <div class="stat-value">
+                            486
+                        </div>
+
+                        <div class="stat-footer positive">
+                            ↑ 28.4%
+                            <span>este mes</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card highlight">
+
+                        <div class="stat-header">
+                            <span>Tiempo ahorrado</span>
+
+                            <div class="stat-icon dark">
+                                ◷
+                            </div>
+                        </div>
+
+                        <div class="stat-value">
+                            16.5 h
+                        </div>
+
+                        <div class="stat-footer">
+                            <span>estimadas mediante automatización</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MAIN GRID -->
+                <div class="dashboard-grid">
+
+
+                    <!-- NEW REPORT -->
+                    <div class="panel report-panel">
+
+                        <div class="panel-header">
+
+                            <div>
+                                <p class="section-label">AUTOMATIZACIÓN</p>
+                                <h2>Crear nuevo reporte</h2>
+                                <p>
+                                    Organiza las fotografías de tus sucursales
+                                    y genera el reporte automáticamente.
+                                </p>
+                            </div>
+
+                            <div class="panel-decoration">
+                                ✦
+                            </div>
+
+                        </div>
+
+
+                        <div class="upload-area" id="uploadArea">
+
+                            <div class="upload-icon">
+                                ↑
+                            </div>
+
+                            <h3>Comienza cargando tus fotografías</h3>
+
+                            <p>
+                                Arrastra tus archivos aquí o selecciona
+                                las fotografías desde tu computadora.
+                            </p>
+
+                            <button class="upload-btn">
+                                Seleccionar fotografías
+                            </button>
+
+                            <small>
+                                JPG, PNG · Máximo 10 MB por archivo
+                            </small>
+
+                        </div>
+
+
+                        <div class="report-options">
+
+                            <div class="option">
+
+                                <span class="option-icon">
+                                    🏪
+                                </span>
+
+                                <div>
+                                    <strong>Sucursales</strong>
+                                    <span>18 registradas</span>
+                                </div>
+
+                            </div>
+
+
+                            <div class="option">
+
+                                <span class="option-icon">
+                                    📅
+                                </span>
+
+                                <div>
+                                    <strong>Periodo</strong>
+                                    <span>Octubre 2026</span>
+                                </div>
+
+                            </div>
+
+
+                            <button class="continue-btn">
+                                Continuar →
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- RECENT REPORTS -->
+                    <div class="panel recent-panel">
+
+                        <div class="panel-heading">
+
+                            <div>
+                                <p class="section-label">ACTIVIDAD</p>
+                                <h2>Reportes recientes</h2>
+                            </div>
+
+                            <a href="#">
+                                Ver todos
+                            </a>
+
+                        </div>
+
+
+                        <div class="report-list">
+
+                            <div class="report-item">
+
+                                <div class="report-file purple-bg">
+                                    PPT
+                                </div>
+
+                                <div class="report-info">
+                                    <strong>Reporte Octubre</strong>
+                                    <span>Plaza Vea Puruchuco</span>
+                                </div>
+
+                                <div class="report-date">
+                                    Hoy
+                                </div>
+
+                            </div>
+
+
+                            <div class="report-item">
+
+                                <div class="report-file blue-bg">
+                                    PPT
+                                </div>
+
+                                <div class="report-info">
+                                    <strong>Reporte Octubre</strong>
+                                    <span>Plaza Vea San Miguel</span>
+                                </div>
+
+                                <div class="report-date">
+                                    Ayer
+                                </div>
+
+                            </div>
+
+
+                            <div class="report-item">
+
+                                <div class="report-file lime-bg">
+                                    PPT
+                                </div>
+
+                                <div class="report-info">
+                                    <strong>Reporte Septiembre</strong>
+                                    <span>Plaza Vea La Molina</span>
+                                </div>
+
+                                <div class="report-date">
+                                    29 Sep
+                                </div>
+
+                            </div>
+
+
+                            <div class="report-item">
+
+                                <div class="report-file purple-bg">
+                                    PPT
+                                </div>
+
+                                <div class="report-info">
+                                    <strong>Reporte Septiembre</strong>
+                                    <span>Plaza Vea Salaverry</span>
+                                </div>
+
+                                <div class="report-date">
+                                    27 Sep
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- BRANCHES -->
+                <div class="panel branches-panel">
+
+                    <div class="panel-heading">
+
+                        <div>
+                            <p class="section-label">RED COMERCIAL</p>
+                            <h2>Sucursales</h2>
+                        </div>
+
+                        <button class="view-all">
+                            Gestionar sucursales →
+                        </button>
+
+                    </div>
+
+
+                    <div class="branch-grid">
+
+                        <div class="branch-card">
+                            <div class="branch-avatar purple-gradient">
+                                PV
+                            </div>
+
+                            <div>
+                                <strong>Plaza Vea Puruchuco</strong>
+                                <span>Último reporte: Hoy</span>
+                            </div>
+
+                            <span class="status active-status">
+                                Activo
+                            </span>
+                        </div>
+
+
+                        <div class="branch-card">
+                            <div class="branch-avatar blue-gradient">
+                                PV
+                            </div>
+
+                            <div>
+                                <strong>Plaza Vea San Miguel</strong>
+                                <span>Último reporte: Ayer</span>
+                            </div>
+
+                            <span class="status active-status">
+                                Activo
+                            </span>
+                        </div>
+
+
+                        <div class="branch-card">
+                            <div class="branch-avatar lime-gradient">
+                                PV
+                            </div>
+
+                            <div>
+                                <strong>Plaza Vea La Molina</strong>
+                                <span>Último reporte: 29 Sep</span>
+                            </div>
+
+                            <span class="status active-status">
+                                Activo
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <script src="js/data.js"></script>
+<script src="js/reporte.js"></script>
+<script src="js/app.js"></script>
+<script src="js/generadorPPT.js"></script>
+
+</body>
+
+</html>
