@@ -1,0 +1,16 @@
+AUTOGUARDADO DE REPORTX
+
+Esta versión guarda automáticamente el avance del reporte en el navegador usando IndexedDB.
+
+- El borrador se identifica por el nombre del reporte y la fecha asignada.
+- Se guardan las cadenas, sedes, fotografías clasificadas y fotografías pendientes.
+- Las fotografías se almacenan como archivos Blob/File dentro del almacenamiento local del navegador.
+- Al volver a abrir ReportX en el mismo navegador y dispositivo, se ofrece recuperar el último borrador guardado.
+- El estado de guardado aparece debajo del título de la pantalla de clasificación.
+
+IMPORTANTE:
+1. El autoguardado es local al navegador y dispositivo donde se creó el reporte. No sincroniza entre computadoras ni navegadores.
+2. No borres los datos del sitio ni el almacenamiento del navegador si necesitas conservar borradores.
+3. Si el navegador está en modo incógnito o tiene almacenamiento restringido, la recuperación puede no estar disponible.
+4. El autoguardado se ejecuta automáticamente mientras la aplicación está abierta y al cambiar de pestaña. Espera unos segundos después de una modificación para ver el estado "Guardado automáticamente".
+5. El archivo PPTX final se sigue descargando mediante el flujo habitual; el borrador no sustituye la descarga final.
