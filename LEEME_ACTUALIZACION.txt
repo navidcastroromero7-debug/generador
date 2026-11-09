@@ -1,0 +1,18 @@
+REPORTX - ACTUALIZACION DE ESTILOS DE FOTOGRAFIAS CLASIFICADAS
+
+Esta version incluye estilos criticos directamente en index.html para que los botones
+"Borrar fotos" y "Borrar tienda" no dependan de una version antigua de styles.css
+almacenada en la cache del navegador. Tambien actualiza el identificador de version
+asociado a css/styles.css.
+
+INSTALACION EN GITHUB PAGES
+1. Descomprime el ZIP.
+2. En el repositorio que publica ReportX, reemplaza los archivos del sitio usando
+   el contenido de la carpeta "AUTOMATIZADOR DE RF".
+3. Verifica que index.html quede en la raiz que GitHub Pages publica. Las carpetas
+   css/ y js/ deben quedar al mismo nivel que index.html.
+4. Confirma los cambios y espera a que termine el despliegue de GitHub Pages.
+5. Abre el sitio publicado en una ventana privada o recarga con Ctrl + F5.
+
+No se modifico la logica de clasificacion, el catalogo de tiendas ni las acciones
+para borrar tiendas o fotografias en esta correccion visual.

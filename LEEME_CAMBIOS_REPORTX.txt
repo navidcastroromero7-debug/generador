@@ -1,0 +1,13 @@
+REPORTX - ACTUALIZACIÓN DE CLASIFICACIÓN DE FOTOGRAFÍAS
+
+1. El orden del PowerPoint sigue el orden en que se marcan las fotografías en la bandeja (1, 2, 3...). No se impone orden alfabético a las imágenes. Si se desmarca una imagen y se vuelve a marcar, pasa al final de la selección.
+2. Botón rojo × en cada fotografía pendiente para eliminarla de la bandeja sin afectar a otras imágenes.
+3. Se conserva la función existente de borrar fotografías clasificadas marcando las fotos de una tienda y pulsando «Borrar fotos».
+4. En «Asignar fotografías» hay una búsqueda por nombre de sucursal; el desplegable se filtra mientras se escribe, ignorando tildes y mayúsculas.
+5. En «Fotografías clasificadas» se incorporó «Agregar o recuperar una tienda». Selecciona cadena, busca la tienda y pulsa «+ Agregar tienda». Una tienda recuperada vuelve sin sus fotos eliminadas.
+6. Las sucursales y cadenas se presentan alfabéticamente según la lista del archivo js/data.js.
+7. Validación del catálogo recibido: 5 cadenas, 222 tiendas únicas (Makro 24, Metro 52, Plaza Vea 79, Tottus 49, Wong 18). Se solicitaban 223; falta identificar una tienda y NO se creó ninguna ficticia. El catálogo mostrará el recuento real.
+8. Se conserva el autoguardado IndexedDB existente y la generación de PPT.
+
+USO: descomprime todo el ZIP y abre index.html como antes, o publica el conjunto completo en tu hosting/GitHub Pages.
+NOTA: la comprobación incluyó sintaxis JS, orden del catálogo, ausencia de IDs duplicados, y prueba de asignación de imágenes con orden. No se realizó una prueba visual end-to-end en navegador.
