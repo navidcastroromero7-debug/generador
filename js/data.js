@@ -370,6 +370,11 @@ const cadenas = [
                 giro: "AASS"
             },
             {
+                id: "METRO SANTA ANITA",
+                nombre: "Metro Santa Anita",
+                giro: "AASS"
+            },
+            {
                 id: "METRO SHELL",
                 nombre: "Metro Shell",
                 giro: "AASS"
